@@ -41,7 +41,13 @@ fn load_spec(
 	para_id: ParaId,
 ) -> std::result::Result<Box<dyn sc_service::ChainSpec>, String> {
 	match id {
+		"galital" => Ok(Box::new(chain_spec::ChainSpec::from_json_bytes(
+			&include_bytes!("../res/galital.json")[..],
+		)?)),
 		"staging" => Ok(Box::new(chain_spec::staging_test_net(para_id))),
+		"galital-local" => Ok(Box::new(chain_spec::ChainSpec::from_json_bytes(
+			&include_bytes!("../res/galital-local.json")[..],
+		)?)),
 		"tick" => Ok(Box::new(chain_spec::ChainSpec::from_json_bytes(
 			&include_bytes!("../res/tick.json")[..],
 		)?)),
