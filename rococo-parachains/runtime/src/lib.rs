@@ -74,11 +74,11 @@ impl_opaque_keys! {
 
 /// This runtime version.
 pub const VERSION: RuntimeVersion = RuntimeVersion {
-	spec_name: create_runtime_str!("cumulus-test-parachain"),
-	impl_name: create_runtime_str!("cumulus-test-parachain"),
+	spec_name: create_runtime_str!("galital-collator"),
+	impl_name: create_runtime_str!("cumulus-collator"),
 	authoring_version: 1,
-	spec_version: 3,
-	impl_version: 1,
+	spec_version: 17,
+	impl_version: 0,
 	apis: RUNTIME_API_VERSIONS,
 	transaction_version: 1,
 };
@@ -235,7 +235,7 @@ impl cumulus_pallet_parachain_system::Config for Runtime {
 	type OnValidationData = ();
 	type SelfParaId = parachain_info::Module<Runtime>;
 	type DownwardMessageHandlers = XcmHandler;
-	type HrmpMessageHandlers = XcmHandler;
+	type XcmpMessageHandlers = XcmHandler;
 }
 
 impl parachain_info::Config for Runtime {}
@@ -289,9 +289,16 @@ impl cumulus_pallet_xcm_handler::Config for Runtime {
 	type Event = Event;
 	type XcmExecutor = XcmExecutor<XcmConfig>;
 	type UpwardMessageSender = ParachainSystem;
-	type HrmpMessageSender = ParachainSystem;
+	type XcmpMessageSender = ParachainSystem;
 	type SendXcmOrigin = EnsureRoot<AccountId>;
 	type AccountIdConverter = LocationConverter;
+}
+
+impl cumulus_spambot::Config for Runtime {
+	type Event = Event;
+	type Origin = Origin;
+	type Call = Call;
+	type XcmSender = XcmHandler;
 }
 
 construct_runtime! {
@@ -309,6 +316,8 @@ construct_runtime! {
 		TransactionPayment: pallet_transaction_payment::{Pallet, Storage},
 		ParachainInfo: parachain_info::{Pallet, Storage, Config},
 		XcmHandler: cumulus_pallet_xcm_handler::{Pallet, Call, Event<T>, Origin},
+
+		Spambot: cumulus_spambot::{Pallet, Call, Storage, Event<T>} = 99,
 	}
 }
 
