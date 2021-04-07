@@ -51,6 +51,9 @@ fn load_spec(
 		"track" => Ok(Box::new(chain_spec::ChainSpec::from_json_bytes(
 			&include_bytes!("../res/track.json")[..],
 		)?)),
+		"galital" => Ok(Box::new(chain_spec::ChainSpec::from_json_bytes(
+			&include_bytes!("../res/galital.json")[..],
+		)?)),
 		"" => Ok(Box::new(chain_spec::get_chain_spec(para_id))),
 		path => Ok(Box::new(chain_spec::ChainSpec::from_json_file(
 			path.into(),
@@ -60,7 +63,7 @@ fn load_spec(
 
 impl SubstrateCli for Cli {
 	fn impl_name() -> String {
-		"Cumulus Test Parachain Collator".into()
+		"Galital Parachain Collator".into()
 	}
 
 	fn impl_version() -> String {
@@ -69,7 +72,7 @@ impl SubstrateCli for Cli {
 
 	fn description() -> String {
 		format!(
-			"Cumulus test parachain collator\n\nThe command-line arguments provided first will be \
+			"Galital parachain collator\n\nThe command-line arguments provided first will be \
 		passed to the parachain node, while the arguments provided after -- will be passed \
 		to the relaychain node.\n\n\
 		{} [parachain-args] -- [relaychain-args]",
