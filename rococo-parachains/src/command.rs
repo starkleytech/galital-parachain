@@ -54,6 +54,9 @@ fn load_spec(
 		"galital" => Ok(Box::new(chain_spec::ChainSpec::from_json_bytes(
 			&include_bytes!("../res/galital.json")[..],
 		)?)),
+		"galital-local" => Ok(Box::new(chain_spec::ChainSpec::from_json_bytes(
+			&include_bytes!("../res/galital.json")[..],
+		)?)),
 		"" => Ok(Box::new(chain_spec::get_chain_spec(para_id))),
 		path => Ok(Box::new(chain_spec::ChainSpec::from_json_file(
 			path.into(),

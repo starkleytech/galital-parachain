@@ -60,7 +60,7 @@ pub struct ExportGenesisStateCommand {
 	pub output: Option<PathBuf>,
 
 	/// Id of the parachain this state is for.
-	#[structopt(long, default_value = "100")]
+	#[structopt(long, default_value = "100", conflicts_with = "chain")]
 	pub parachain_id: u32,
 
 	/// Write output in binary. Default is to write in hex.
@@ -84,7 +84,7 @@ pub struct ExportGenesisWasmCommand {
 	pub raw: bool,
 
 	/// The name of the chain for that the genesis wasm file should be exported.
-	#[structopt(long)]
+	#[structopt(long, conflicts_with = "parachain-id")]
 	pub chain: Option<String>,
 }
 

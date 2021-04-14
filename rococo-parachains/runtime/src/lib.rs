@@ -66,6 +66,21 @@ use xcm_executor::{
 	Config, XcmExecutor,
 };
 
+
+impl orml_nft::Config for Runtime {
+	type ClassId = u64;
+	type TokenId = u64;
+	type ClassData = nft_factory_pallet::ClassData;
+	type TokenData = nft_factory_pallet::TokenData;
+}
+
+
+impl nft_factory_pallet::Config for Runtime {
+	type Event = Event;
+	type Currency = Balances;
+}
+
+
 pub type SessionHandlers = ();
 
 impl_opaque_keys! {
@@ -77,7 +92,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	spec_name: create_runtime_str!("galital-collator"),
 	impl_name: create_runtime_str!("cumulus-collator"),
 	authoring_version: 1,
-	spec_version: 17,
+	spec_version: 19,
 	impl_version: 0,
 	apis: RUNTIME_API_VERSIONS,
 	transaction_version: 1,
@@ -225,6 +240,16 @@ impl pallet_transaction_payment::Config for Runtime {
 	type FeeMultiplierUpdate = ();
 }
 
+parameter_types! {
+	pub const ProofLimit: u32 = 10_000;
+}
+
+impl pallet_atomic_swap::Config for Runtime {
+	type Event = Event;
+	type SwapAction = nft_factory_pallet::ChibaSwapAction<Runtime>;
+	type ProofLimit = ProofLimit;
+}
+
 impl pallet_sudo::Config for Runtime {
 	type Call = Call;
 	type Event = Event;
@@ -248,6 +273,7 @@ parameter_types! {
 		id: ParachainInfo::parachain_id().into()
 	}.into();
 }
+
 
 type LocationConverter = (
 	ParentIsDefault<AccountId>,
@@ -318,6 +344,9 @@ construct_runtime! {
 		XcmHandler: cumulus_pallet_xcm_handler::{Pallet, Call, Event<T>, Origin},
 
 		Spambot: cumulus_spambot::{Pallet, Call, Storage, Event<T>} = 99,
+		AtomicSwap: pallet_atomic_swap::{Pallet, Call, Storage, Event<T>},
+		Nft: orml_nft::{Pallet, Call, Storage},
+		NftFactory: nft_factory_pallet::{Pallet, Call, Storage, Event<T>},
 	}
 }
 
@@ -404,6 +433,22 @@ impl_runtime_apis! {
 			tx: <Block as BlockT>::Extrinsic,
 		) -> TransactionValidity {
 			Executive::validate_transaction(source, tx)
+		}
+	}
+
+	impl pallet_transaction_payment_rpc_runtime_api::TransactionPaymentApi<Block, Balance>
+		for Runtime {
+		fn query_info(
+			uxt: <Block as BlockT>::Extrinsic,
+			len: u32,
+		) -> pallet_transaction_payment_rpc_runtime_api::RuntimeDispatchInfo<Balance> {
+			TransactionPayment::query_info(uxt, len)
+		}
+		fn query_fee_details(
+			uxt: <Block as BlockT>::Extrinsic,
+			len: u32,
+		) -> pallet_transaction_payment::FeeDetails<Balance> {
+			TransactionPayment::query_fee_details(uxt, len)
 		}
 	}
 

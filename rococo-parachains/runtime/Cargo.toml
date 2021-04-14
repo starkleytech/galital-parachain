@@ -32,6 +32,7 @@ pallet-randomness-collective-flip = { git = "https://github.com/paritytech/subst
 pallet-timestamp = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "rococo-v1" }
 pallet-sudo = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "rococo-v1" }
 pallet-transaction-payment = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "rococo-v1" }
+pallet-transaction-payment-rpc-runtime-api = { git = "https://github.com/paritytech/substrate", branch = "rococo-v1", default-features = false }
 
 # Cumulus dependencies
 cumulus-pallet-parachain-system = { path = "../../pallets/parachain-system", default-features = false }
@@ -44,6 +45,13 @@ polkadot-parachain = { git = "https://github.com/paritytech/polkadot", default-f
 xcm = { git = "https://github.com/paritytech/polkadot", default-features = false, branch = "rococo-v1" }
 xcm-builder = { git = "https://github.com/paritytech/polkadot", default-features = false, branch = "rococo-v1" }
 xcm-executor = { git = "https://github.com/paritytech/polkadot", default-features = false, branch = "rococo-v1" }
+
+
+# NFT dependencies
+pallet-atomic-swap = { git = "https://github.com/paritytech/substrate", branch = "rococo-v1", default-features = false }
+orml-nft = { git = "https://github.com/open-web3-stack/open-runtime-module-library", branch = "master", default-features = false }
+nft-factory-pallet = { path = "../../pallets/nft-factory-pallet", default-features = false }
+
 
 [build-dependencies]
 substrate-wasm-builder = "3.0.0"
@@ -72,6 +80,7 @@ std = [
 	"pallet-timestamp/std",
 	"pallet-sudo/std",
 	"pallet-transaction-payment/std",
+	"pallet-transaction-payment-rpc-runtime-api/std",
 	"parachain-info/std",
 	"rococo-parachain-primitives/std",
 	"cumulus-pallet-parachain-system/std",
@@ -81,4 +90,7 @@ std = [
 	"xcm/std",
 	"xcm-builder/std",
 	"xcm-executor/std",
+	"pallet-atomic-swap/std",
+	"orml-nft/std",
+    'nft-factory-pallet/std',
 ]
