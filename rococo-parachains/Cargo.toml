@@ -1,15 +1,12 @@
- 
 [package]
-name = "galital-collator"
+name = "rococo-collator"
 version = "0.1.0"
-authors = ["Starkley Tech <contact@starkleytech.com>"]
+authors = ["Parity Technologies <admin@parity.io>"]
 build = "build.rs"
 edition = "2018"
-homepage = "https://galital.com"
-repository = "https://github.com/starkleytech/galital-parachain"
 
 [[bin]]
-name = "galital-collator"
+name = "rococo-collator"
 path = "src/main.rs"
 
 [dependencies]
@@ -25,7 +22,8 @@ serde = { version = "1.0.119", features = ["derive"] }
 hex-literal = "0.2.1"
 
 # Parachain dependencies
-parachain-runtime = { package = "galital-parachain-runtime", path = "runtime" }
+parachain-runtime = { package = "cumulus-test-parachain-runtime", path = "runtime" }
+shell-runtime = { package = "cumulus-shell-runtime", path = "shell-runtime" }
 rococo-parachain-primitives = { path = "primitives" }
 
 # Substrate dependencies
@@ -70,7 +68,6 @@ cumulus-primitives-core = { path = "../primitives/core" }
 polkadot-primitives = { git = "https://github.com/paritytech/polkadot", branch = "rococo-v1" }
 polkadot-service = { git = "https://github.com/paritytech/polkadot", branch = "rococo-v1" }
 polkadot-cli = { git = "https://github.com/paritytech/polkadot", branch = "rococo-v1" }
-polkadot-test-service = { git = "https://github.com/paritytech/polkadot", branch = "rococo-v1" }
 polkadot-parachain = { git = "https://github.com/paritytech/polkadot", branch = "rococo-v1" }
 
 [build-dependencies]
